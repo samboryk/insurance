@@ -8,11 +8,6 @@ public class HibernateUtil {
     static {
         try {
             Configuration configuration = new Configuration();
-
-            // ВИДАЛЕНО: configuration.configure();
-            // Без .configure() Hibernate автоматично шукає hibernate.properties
-
-            // Додаємо entity класи
             configuration.addAnnotatedClass(Branch.class);
             configuration.addAnnotatedClass(InsuranceType.class);
             configuration.addAnnotatedClass(Contract.class);
