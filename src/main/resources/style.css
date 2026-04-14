@@ -1,0 +1,12 @@
+.root { -fx-background-color: #e6f3ff; }
+.label { -fx-font-size: 14px; -fx-font-family: "Segoe UI"; }
+.button {
+    -fx-background-color: #1e88e5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+}
+.button:hover { -fx-background-color: #1565c0; }
+.table-view { -fx-background-color: white; -fx-border-color: #1e88e5; }
+.tab-pane .tab-header-background { -fx-background-color: #1e88e5; }
+.tab { -fx-background-color: #81d4fa; }
