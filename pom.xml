@@ -19,10 +19,9 @@
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
+            <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.hibernate</groupId>
