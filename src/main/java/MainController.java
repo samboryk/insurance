@@ -1,7 +1,9 @@
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldTableCell;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,17 +14,14 @@ public class MainController {
     private final InsuranceTypeDAO typeDAO = new InsuranceTypeDAO();
     private final ContractDAO contractDAO = new ContractDAO();
 
-    // --- Філії ---
     @FXML private TableView<Branch> branchTable;
     @FXML private TableColumn<Branch, String> branchColName, branchColAddress, branchColPhone;
     @FXML private TextField tfBranchName, tfBranchAddress, tfBranchPhone;
 
-    // --- Види страхування ---
     @FXML private TableView<InsuranceType> typeTable;
     @FXML private TableColumn<InsuranceType, String> typeColName;
     @FXML private TextField tfTypeName;
 
-    // --- Договори ---
     @FXML private TableView<Contract> contractTable;
     @FXML private TableColumn<Contract, String> colContractNum, colContractDate, colContractSum, colContractRate, colContractPremium, colContractBranch, colContractType;
     @FXML private TextField tfContractNum, tfContractSum, tfContractRate;
@@ -30,22 +29,56 @@ public class MainController {
     @FXML private ComboBox<Branch> cbBranch;
     @FXML private ComboBox<InsuranceType> cbType;
 
-    // --- Звіт ---
     @FXML private Label lblTotalSum, lblTotalPremium;
+
 
     @FXML
     public void initialize() {
-        // Налаштування колонок Філій
+        setupBranchTable();
+        setupTypeTable();
+        setupContractTable();
+
+
+        refreshAllData();
+    }
+
+
+    private void setupBranchTable() {
+        branchTable.setEditable(true);
+
         branchColName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
+        branchColName.setCellFactory(TextFieldTableCell.forTableColumn());
+        branchColName.setOnEditCommit(event -> updateBranchField(event.getRowValue(), "name", event.getNewValue()));
+
         branchColAddress.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getAddress()));
+        branchColAddress.setCellFactory(TextFieldTableCell.forTableColumn());
+        branchColAddress.setOnEditCommit(event -> updateBranchField(event.getRowValue(), "address", event.getNewValue()));
+
         branchColPhone.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getPhone()));
-        branchTable.getItems().addAll(branchDAO.findAll());
+        branchColPhone.setCellFactory(TextFieldTableCell.forTableColumn());
+        branchColPhone.setOnEditCommit(event -> updateBranchField(event.getRowValue(), "phone", event.getNewValue()));
+    }
 
-        // Налаштування колонок Видів страхування
+    private void updateBranchField(Branch branch, String field, String newValue) {
+        if (field.equals("name")) branch.setName(newValue);
+        else if (field.equals("address")) branch.setAddress(newValue);
+        else if (field.equals("phone")) branch.setPhone(newValue);
+
+        updateInDatabase(branch);
+    }
+
+    private void setupTypeTable() {
+        typeTable.setEditable(true);
         typeColName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
-        typeTable.getItems().addAll(typeDAO.findAll());
+        typeColName.setCellFactory(TextFieldTableCell.forTableColumn());
+        typeColName.setOnEditCommit(event -> {
+            InsuranceType type = event.getRowValue();
+            type.setName(event.getNewValue());
+            updateInDatabase(type);
+        });
+    }
 
-        // Налаштування колонок Договорів
+    private void setupContractTable() {
         colContractNum.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getContractNumber()));
         colContractDate.setCellValueFactory(data -> {
             Date d = data.getValue().getConclusionDate();
@@ -59,11 +92,9 @@ public class MainController {
         });
         colContractBranch.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBranch().getName()));
         colContractType.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getInsuranceType().getName()));
-
-        contractTable.getItems().addAll(contractDAO.findAll());
-        cbBranch.getItems().addAll(branchDAO.findAll());
-        cbType.getItems().addAll(typeDAO.findAll());
     }
+
+
 
     @FXML
     private void handleAddBranch() {
@@ -71,7 +102,7 @@ public class MainController {
             Branch b = new Branch(tfBranchName.getText().trim(), tfBranchAddress.getText().trim(), tfBranchPhone.getText().trim());
             branchDAO.save(b);
             branchTable.getItems().add(b);
-            cbBranch.getItems().add(b); // Оновлюємо список у договорах
+            cbBranch.getItems().add(b);
             tfBranchName.clear(); tfBranchAddress.clear(); tfBranchPhone.clear();
         }
     }
@@ -92,7 +123,7 @@ public class MainController {
             InsuranceType t = new InsuranceType(tfTypeName.getText().trim());
             typeDAO.save(t);
             typeTable.getItems().add(t);
-            cbType.getItems().add(t); // Оновлюємо список у договорах
+            cbType.getItems().add(t);
             tfTypeName.clear();
         }
     }
@@ -150,5 +181,29 @@ public class MainController {
         }
         lblTotalSum.setText(String.format("Загальна страхова сума: %.2f грн", sum));
         lblTotalPremium.setText(String.format("Загальна премія: %.2f грн", premium));
+    }
+
+    private void refreshAllData() {
+        branchTable.getItems().setAll(branchDAO.findAll());
+        typeTable.getItems().setAll(typeDAO.findAll());
+        contractTable.getItems().setAll(contractDAO.findAll());
+
+        cbBranch.getItems().setAll(branchDAO.findAll());
+        cbType.getItems().setAll(typeDAO.findAll());
+    }
+
+    private void updateInDatabase(Object entity) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(entity);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 }

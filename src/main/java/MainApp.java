@@ -1,5 +1,3 @@
-package com.insurance;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,15 +8,17 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Завантажуємо FXML файл
         Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
 
         Scene scene = new Scene(root, 1100, 750);
 
-        // Підключаємо ваш існуючий CSS
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        try {
+            scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+        } catch (NullPointerException e) {
+            System.out.println("Попередження: файл style.css не знайдено, стилі не застосовано.");
+        }
 
-        stage.setTitle("Страхова компанія (FXML Версія)");
+        stage.setTitle("Страхова компанія");
         stage.setScene(scene);
         stage.show();
     }
