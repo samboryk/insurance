@@ -1,129 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <TabPane stylesheets="@style.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
     <tabs>
-        <Tab text="Викладачі">
+        <Tab text="Філії">
             <VBox spacing="15" alignment="TOP_CENTER">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-
                 <VBox spacing="15" styleClass="card" VBox.vgrow="ALWAYS">
-                    <Label text="Список викладачів кафедри" styleClass="header-label"/>
-
-                    <TableView fx:id="teacherTable" VBox.vgrow="ALWAYS">
+                    <Label text="Список філій" styleClass="header-label"/>
+                    <TableView fx:id="branchTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colTLastName" text="Прізвище" prefWidth="120"/>
-                            <TableColumn fx:id="colTFirstName" text="Ім'я" prefWidth="100"/>
-                            <TableColumn fx:id="colTMiddleName" text="По батькові" prefWidth="120"/>
-                            <TableColumn fx:id="colTDegree" text="Ступінь" prefWidth="120"/>
-                            <TableColumn fx:id="colTPosition" text="Посада" prefWidth="120"/>
-                            <TableColumn fx:id="colTExperience" text="Стаж (років)" prefWidth="80"/>
+                            <TableColumn fx:id="branchColName" text="Назва" prefWidth="200"/>
+                            <TableColumn fx:id="branchColAddress" text="Адреса" prefWidth="300"/>
+                            <TableColumn fx:id="branchColPhone" text="Телефон" prefWidth="150"/>
                         </columns>
                     </TableView>
-
-                    <Separator/>
-
                     <GridPane hgap="15" vgap="15">
-                        <Label text="Прізвище:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <TextField fx:id="tfLastName" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
-                        <Label text="Ім'я:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                        <TextField fx:id="tfFirstName" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="200"/>
-
-                        <Label text="По батькові:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="tfMiddleName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                        <Label text="Ступінь:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                        <TextField fx:id="tfDegree" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-
-                        <Label text="Посада:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                        <TextField fx:id="tfPosition" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                        <Label text="Стаж (роки):" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
-                        <TextField fx:id="tfExperience" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
+                        <Label text="Назва:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="tfBranchName" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Адреса:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="tfBranchAddress" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Телефон:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="tfBranchPhone" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
                     </GridPane>
-
-                    <HBox spacing="15" alignment="CENTER_LEFT">
-                        <padding><Insets top="10" /></padding>
-                        <Button text="Додати викладача" onAction="#handleAddTeacher" styleClass="primary-button"/>
-                        <Button text="Видалити вибраного" onAction="#handleDeleteTeacher" styleClass="danger-button"/>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Оновити дані" onAction="#handleRefresh" styleClass="secondary-button"/>
+                    <HBox spacing="15">
+                        <Button text="Додати філію" onAction="#handleAddBranch" styleClass="primary-button"/>
+                        <Button text="Видалити" onAction="#handleDeleteBranch" styleClass="danger-button"/>
                     </HBox>
                 </VBox>
             </VBox>
         </Tab>
-
-        <Tab text="Предмети">
+        <Tab text="Види страхування">
             <VBox spacing="15" alignment="TOP_CENTER">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-
                 <VBox spacing="15" styleClass="card" VBox.vgrow="ALWAYS">
-                    <Label text="Перелік навчальних дисциплін" styleClass="header-label"/>
-
-                    <TableView fx:id="subjectTable" VBox.vgrow="ALWAYS">
+                    <Label text="Види страхування" styleClass="header-label"/>
+                    <TableView fx:id="typeTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colSubName" text="Назва предмету" prefWidth="400"/>
-                            <TableColumn fx:id="colSubHours" text="Кількість годин" prefWidth="120"/>
+                            <TableColumn fx:id="typeColName" text="Назва виду" prefWidth="400"/>
                         </columns>
                     </TableView>
-
-                    <Separator/>
-
-                    <GridPane hgap="15" vgap="15">
-                        <Label text="Назва дисципліни:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <TextField fx:id="tfSubName" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="300"/>
-                        <Label text="Всього годин:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                        <TextField fx:id="tfSubHours" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="100"/>
-                    </GridPane>
-
-                    <HBox spacing="15" alignment="CENTER_LEFT">
-                        <padding><Insets top="10" /></padding>
-                        <Button text="Додати предмет" onAction="#handleAddSubject" styleClass="primary-button"/>
-                        <Button text="Видалити предмет" onAction="#handleDeleteSubject" styleClass="danger-button"/>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Оновити дані" onAction="#handleRefresh" styleClass="secondary-button"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Назва:"/>
+                        <TextField fx:id="tfTypeName" prefWidth="250"/>
+                    </HBox>
+                    <HBox spacing="15">
+                        <Button text="Додати вид" onAction="#handleAddType" styleClass="primary-button"/>
+                        <Button text="Видалити" onAction="#handleDeleteType" styleClass="danger-button"/>
                     </HBox>
                 </VBox>
             </VBox>
         </Tab>
-
-        <Tab text="Навантаження">
+        <Tab text="Договори">
             <VBox spacing="15" alignment="TOP_CENTER">
                 <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-
                 <VBox spacing="15" styleClass="card" VBox.vgrow="ALWAYS">
-                    <Label text="Розподіл навантаження на семестр" styleClass="header-label"/>
-
-                    <TableView fx:id="workloadTable" VBox.vgrow="ALWAYS">
+                    <Label text="Список договорів" styleClass="header-label"/>
+                    <TableView fx:id="contractTable" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="colWTeacher" text="Викладач" prefWidth="250"/>
-                            <TableColumn fx:id="colWSubject" text="Предмет" prefWidth="300"/>
-                            <TableColumn fx:id="colWGroup" text="Група" prefWidth="120"/>
+                            <TableColumn fx:id="colContractNum" text="№" prefWidth="100"/>
+                            <TableColumn fx:id="colContractDate" text="Дата" prefWidth="100"/>
+                            <TableColumn fx:id="colContractSum" text="Сума" prefWidth="100"/>
+                            <TableColumn fx:id="colContractRate" text="Тариф" prefWidth="80"/>
+                            <TableColumn fx:id="colContractPremium" text="Премія" prefWidth="100"/>
+                            <TableColumn fx:id="colContractBranch" text="Філія" prefWidth="150"/>
+                            <TableColumn fx:id="colContractType" text="Вид" prefWidth="150"/>
                         </columns>
                     </TableView>
-
-                    <Separator/>
-
                     <GridPane hgap="15" vgap="15">
-                        <Label text="Виберіть викладача:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                        <ComboBox fx:id="cbTeacher" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250"/>
-
-                        <Label text="Виберіть предмет:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
-                        <ComboBox fx:id="cbSubject" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="250"/>
-
-                        <Label text="Номер групи:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                        <TextField fx:id="tfGroup" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250"/>
+                        <Label text="№ договору:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="tfContractNum" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Label text="Дата:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <DatePicker fx:id="dpContractDate" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                        <Label text="Сума:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="tfContractSum" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Тариф:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <TextField fx:id="tfContractRate" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                        <Label text="Філія:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <ComboBox fx:id="cbBranch" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200"/>
+                        <Label text="Вид:" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+                        <ComboBox fx:id="cbType" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="200"/>
                     </GridPane>
-
-                    <HBox spacing="15" alignment="CENTER_LEFT">
-                        <padding><Insets top="10" /></padding>
-                        <Button text="Призначити навантаження" onAction="#handleAddWorkload" styleClass="primary-button"/>
-                        <Button text="Видалити запис" onAction="#handleDeleteWorkload" styleClass="danger-button"/>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button text="Оновити дані" onAction="#handleRefresh" styleClass="secondary-button"/>
+                    <HBox spacing="15">
+                        <Button text="Укласти договір" onAction="#handleAddContract" styleClass="primary-button"/>
+                        <Button text="Видалити" onAction="#handleDeleteContract" styleClass="danger-button"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Оновити" onAction="#handleRefresh" styleClass="secondary-button"/>
                     </HBox>
                 </VBox>
+            </VBox>
+        </Tab>
+        <Tab text="Фінансовий звіт">
+            <VBox spacing="20">
+                <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
+                <Label text="Фінансова діяльність компанії" styleClass="header-label" />
+                <Button text="Оновити звіт" onAction="#handleRefreshReport" styleClass="secondary-button"/>
+                <Separator/>
+                <Label fx:id="lblTotalSum" text="Загальна страхова сума: 0.00 грн" style="-fx-font-size: 16px;"/>
+                <Label fx:id="lblTotalPremium" text="Загальна премія: 0.00 грн" style="-fx-font-size: 16px;"/>
             </VBox>
         </Tab>
     </tabs>

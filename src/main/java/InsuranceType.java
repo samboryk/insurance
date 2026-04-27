@@ -3,12 +3,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "insurance_types")
 public class InsuranceType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false) private String name;
 
     public InsuranceType() {}
     public InsuranceType(String name) { this.name = name; }

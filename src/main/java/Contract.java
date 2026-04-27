@@ -1,33 +1,24 @@
-
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "contracts")
 public class Contract {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "contract_number", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String contractNumber;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "conclusion_date")
+    @Column(nullable = false)
     private Date conclusionDate;
-
-    @Column(name = "insurance_sum")
     private double insuranceSum;
-
-    @Column(name = "tariff_rate")
     private double tariffRate;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id", nullable = false)
+    @ManyToOne @JoinColumn(name = "branch_id", nullable = false)
     private Branch branch;
 
-    @ManyToOne
-    @JoinColumn(name = "insurance_type_id", nullable = false)
+    @ManyToOne @JoinColumn(name = "type_id", nullable = false)
     private InsuranceType insuranceType;
 
     public Contract() {}
@@ -46,7 +37,4 @@ public class Contract {
     public void setBranch(Branch branch) { this.branch = branch; }
     public InsuranceType getInsuranceType() { return insuranceType; }
     public void setInsuranceType(InsuranceType insuranceType) { this.insuranceType = insuranceType; }
-
-    @Override
-    public String toString() { return "Договір №" + contractNumber; }
 }

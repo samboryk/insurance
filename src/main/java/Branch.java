@@ -1,23 +1,17 @@
- import javax.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "branches")
 public class Branch {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String name;
-
+    @Column(nullable = false) private String name;
     private String address;
     private String phone;
 
     public Branch() {}
     public Branch(String name, String address, String phone) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
+        this.name = name; this.address = address; this.phone = phone;
     }
 
     public Long getId() { return id; }
